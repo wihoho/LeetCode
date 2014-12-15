@@ -1,6 +1,5 @@
 package LongestCommonPrefix;
 
-import com.sun.tools.javac.resources.compiler;
 
 /**
  * Authored by GongLi at 17:06 on 1/3/14
