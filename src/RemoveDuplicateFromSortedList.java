@@ -7,47 +7,27 @@ public class RemoveDuplicateFromSortedList {
     public ListNode deleteDuplicates(ListNode head) {
         if (head == null) return null;
 
-        ListNode start = head.next;
-        if (start == null) {
-            return head;
-        }
+        ListNode dummyNode = new ListNode(1);
+        dummyNode.next = head;
 
-        ListNode prev = head;
-        ListNode prevPrev = null;
+        ListNode prev = dummyNode;
+        ListNode cur = head;
 
-        ListNode finalHead = null;
-        while (start != null) {
-            if (start.val == prev.val) {
-                if (prevPrev == null) {
-                    if (start.next != null) {
-                        prev = start.next;
-                        start = prev.next;
-                        finalHead = prev;
-                    } else {
-                        break;
-                    }
-                } else {
-                    prevPrev.next = start.next;
-                    prev = start.next;
-
-                    if (start.next != null) {
-                        start = start.next.next;
-                    } else {
-                        break;
-                    }
-                }
-            } else {
-                prevPrev = prev;
-                prev = start;
-                start = start.next;
-
-                if (finalHead == null) {
-                    finalHead = prevPrev;
-                }
+        while (cur != null) {
+            while (cur.next != null && cur.val == cur.next.val) {
+                cur = cur.next;
             }
+
+            if (prev.next == cur) {
+                prev = prev.next;
+            } else {
+                prev.next = cur.next;
+            }
+
+            cur = cur.next;
         }
 
-        return finalHead;
+        return dummyNode.next;
     }
 
 
@@ -55,9 +35,13 @@ public class RemoveDuplicateFromSortedList {
         ListNode node1 = new ListNode(1);
         ListNode node2 = new ListNode(1);
         ListNode node3 = new ListNode(1);
+        ListNode node4 = new ListNode(2);
+        ListNode node5 = new ListNode(3);
 
         node1.next = node2;
         node2.next = node3;
+        node3.next = node4;
+        node4.next = node5;
         RemoveDuplicateFromSortedList removeDuplicateFromSortedList = new RemoveDuplicateFromSortedList();
         ListNode result = removeDuplicateFromSortedList.deleteDuplicates(node1);
         System.out.println();
