@@ -4,6 +4,7 @@
  */
 public class UniqueBinaryTrees {
     public int generateTrees(int n) {
+        int[][] arr = new int[n][n];
         return generate(1, n);
     }
 
