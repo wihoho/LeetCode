@@ -1,6 +1,5 @@
 /**
- *
- * @author Gong Li <gong_l@worksap.co.jp> on 3/3/2016.
+ * Created by wihoho on 5/3/16.
  */
 public class ListNode {
     int val;

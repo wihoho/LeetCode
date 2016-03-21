@@ -1,6 +1,5 @@
 /**
- *
- * @author Gong Li <gong_l@worksap.co.jp> on 9/3/2016.
+ * Created by wihoho on 11/3/16.
  */
 public class TreeNode {
     int val;

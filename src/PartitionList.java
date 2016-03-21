@@ -1,45 +1,46 @@
 /**
- *
- * @author Gong Li <gong_l@worksap.co.jp> on 4/3/2016.
+ * Created by wihoho on 5/3/16.
  */
 public class PartitionList {
+
+    public ListNode partition(ListNode head, int x) {
+        if (head == null) return null;
+
+        ListNode dummy1 = new ListNode(1);
+        ListNode dummy2 = new ListNode(1);
+
+        ListNode p = dummy1;
+        ListNode q = dummy2;
+
+        ListNode runner = head;
+        while (runner != null) {
+            if (runner.val < x) {
+                p.next = runner;
+                p = p.next;
+            } else {
+                q.next = runner;
+                q = q.next;
+            }
+
+            runner = runner.next;
+        }
+
+        q.next = null;
+        p.next = dummy2.next;
+        return dummy1.next;
+    }
 
     public static void main(String[] args) {
         ListNode node1 = new ListNode(1);
         ListNode node2 = new ListNode(2);
         ListNode node3 = new ListNode(3);
 
-        node3.next = node2;
+//        node3.next = node2;
         node2.next = node1;
 
         PartitionList partitionList = new PartitionList();
-        ListNode result = partitionList.partition(node3, 2);
+        ListNode result = partitionList.partition(node2, 1);
         System.out.println();
-    }
 
-    public ListNode partition(ListNode head, int x) {
-        ListNode dummy = new ListNode(1);
-        dummy.next = head;
-
-        ListNode pivot = dummy;
-        ListNode runner = head;
-        ListNode prev = dummy;
-
-        while (runner != null) {
-            if (runner.val <= x) {
-                // exchange
-                ListNode temp = pivot.next;
-                pivot.next = runner;
-                runner = runner.next;
-                pivot.next.next = temp;
-                pivot = pivot.next;
-                prev.next = runner;
-            } else {
-                runner = runner.next;
-                prev = runner;
-            }
-        }
-
-        return dummy.next;
     }
 }
