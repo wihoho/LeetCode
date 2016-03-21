@@ -1,8 +1,8 @@
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
+import java.util.LinkedList;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
 
 /**
@@ -12,78 +12,36 @@ import java.util.Set;
 public class WordLadder {
 
     public int ladderLength(String beginWord, String endWord, Set<String> wordList) {
-        Map<String, Node> map = new HashMap<>();
-        wordList.forEach(item -> {
-            map.put(item, new Node(item));
-        });
-        map.put(endWord, new Node(endWord));
+        Map<String, Integer> map = new HashMap<>();
+        Queue<String> queue = new LinkedList<String>();
+        queue.add(beginWord);
+        map.put(beginWord, 0);
 
-        // construct the graph
-        Node current = new Node(beginWord);
-        map.put(beginWord, current);
-        Node desination = map.get(endWord);
-        buildGraph(map, current, new HashSet<>());
+        while (!queue.isEmpty()) {
+            String currentString = queue.poll();
+            if (currentString.equals(endWord)) {
+                break;
+            }
 
-        int[] minValue = new int[1];
-        minValue[0] = Integer.MAX_VALUE;
-        traverse(current, desination, minValue, 0);
+            for (int i = 0; i < currentString.length(); i++) {
+                char[] charArray = currentString.toCharArray();
 
-        return minValue[0];
-    }
-
-    public void buildGraph(Map<String, Node> map, Node root, Set<String> alreadySet) {
-        if (alreadySet.contains(root.value))
-            return;
-
-        alreadySet.add(root.value);
-
-        String beginWord = root.value;
-        for (int i = 0; i < beginWord.length(); i++) {
-            char curChar = beginWord.charAt(i);
-
-            for (char start = 'a'; start <= 'z'; start++) {
-                if (curChar != start) {
-                    String newString = beginWord.substring(0, i) + start + beginWord.substring(i + 1);
-                    if (map.containsKey(newString)) {
-                        root.adjacentNodes.add(map.get(newString));
+                for (char j = 'a'; j <= 'z'; j++) {
+                    if (j != currentString.charAt(i)) {
+                        charArray[i] = j;
+                        String newString = String.valueOf(charArray);
+                        if (wordList.contains(newString) && !map.containsKey(newString)) {
+                            map.put(newString, map.get(currentString) + 1);
+                            queue.add(newString);
+                        }
                     }
                 }
+
+                charArray[i] = currentString.charAt(i);
             }
         }
 
-        for (Node adj : root.adjacentNodes) {
-            buildGraph(map, adj, alreadySet);
-        }
-    }
-
-    public void traverse(Node root, Node destination, int[] minValue, int currentValue) {
-        if (root.value.equals(destination.value)) {
-            if (minValue[0] > currentValue) {
-                minValue[0] = currentValue;
-            }
-
-            return;
-        }
-
-        root.visited = true;
-
-        currentValue += 1;
-        for (Node n : root.adjacentNodes) {
-            if (!n.visited) {
-                traverse(n, destination, minValue, currentValue);
-            }
-        }
-    }
-
-    public static class Node {
-        String value;
-        List<Node> adjacentNodes;
-        boolean visited;
-
-        public Node(String value) {
-            this.value = value;
-            this.adjacentNodes = new ArrayList<>();
-        }
+        return map.containsKey(endWord) ? map.get(endWord) : 0;
     }
 
     public static void main(String[] args) {
