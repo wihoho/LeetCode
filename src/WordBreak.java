@@ -7,7 +7,22 @@ import java.util.Set;
  */
 public class WordBreak {
     public boolean wordBreak(String s, Set<String> wordDict) {
-        return wordBreak(s, wordDict, 0);
+        if (s == null || s.length() == 0) return false;
+
+
+        boolean[] dp = new boolean[s.length() + 1];
+        dp[0] = true;
+
+        for (int i = 1; i <= s.length(); i++) {
+            for (int j = 0; j < i; j++) {
+                if (dp[j] && wordDict.contains(s.substring(j, i))) {
+                    dp[i] = true;
+                    break;
+                }
+            }
+        }
+
+        return dp[s.length()];
     }
 
     public boolean wordBreak(String s, Set<String> wordDict, int start) {
@@ -16,11 +31,11 @@ public class WordBreak {
         }
 
         boolean result = false;
-        for(int i = start+1; i <= s.length(); i ++) {
+        for (int i = start + 1; i <= s.length(); i++) {
             if (wordDict.contains(s.substring(start, i))) {
                 if (wordBreak(s, wordDict, i)) {
                     result = true;
-                };
+                }
             }
         }
 
@@ -30,10 +45,10 @@ public class WordBreak {
     public static void main(String[] args) {
         WordBreak wordBreak = new WordBreak();
         Set<String> set = new HashSet<>();
-        set.add("aaa");
-        set.add("aaaa");
+        set.add("leet");
+        set.add("code");
 
-        System.out.println(wordBreak.wordBreak("aaaaaaa", set));
+        System.out.println(wordBreak.wordBreak("leetcode", set));
 
     }
 }
