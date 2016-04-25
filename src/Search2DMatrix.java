@@ -15,7 +15,7 @@ public class Search2DMatrix {
             int x = middle / n;
             int y = middle % n;
             if (matrix[x][y] < target) {
-                 start = middle + 1;
+                start = middle + 1;
             } else if (matrix[x][y] > target) {
                 end = middle - 1;
             } else {
@@ -28,5 +28,12 @@ public class Search2DMatrix {
 
     public static void main(String[] args) {
         Search2DMatrix search2DMatrix = new Search2DMatrix();
+        int[][] matrix = new int[2][2];
+        matrix[0][0] = 1;
+        matrix[0][1] = 4;
+        matrix[1][0] = 2;
+        matrix[1][1] = 5;
+
+        search2DMatrix.searchMatrix(matrix, 2);
     }
 }
