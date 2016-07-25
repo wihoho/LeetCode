@@ -1,5 +1,9 @@
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Map;
+import java.util.Queue;
+import java.util.Set;
 
 /**
  *
@@ -8,27 +12,35 @@ import java.util.Map;
 public class CloneGraph {
 
     public UndirectedGraphNode cloneGraph(UndirectedGraphNode node) {
-        if (node == null) return null;
-        Map<Integer, UndirectedGraphNode> map = new HashMap<>();
-        cloneNode(map, node);
-        return map.get(node.label);
-    }
+        Map<UndirectedGraphNode, UndirectedGraphNode> map = new HashMap<>();
+        Set<UndirectedGraphNode> set = new HashSet<>();
+        Queue<UndirectedGraphNode> queue = new LinkedList<>();
+        queue.add(node);
+        set.add(node);
 
-    public void cloneNode(Map<Integer, UndirectedGraphNode> map, UndirectedGraphNode node) {
-        int currentLabel = node.label;
-        if (!map.containsKey(currentLabel)) {
-            map.put(currentLabel, new UndirectedGraphNode(currentLabel));
-        }
-
-        UndirectedGraphNode clone = map.get(currentLabel);
-        for(UndirectedGraphNode n: node.neighbors) {
-            if (!map.containsKey(n.label)) {
-                map.put(n.label, new UndirectedGraphNode(n.label));
-                cloneNode(map, n);
+        while (!queue.isEmpty()) {
+            UndirectedGraphNode curNode = queue.poll();
+            if (!map.containsKey(curNode)) {
+                map.put(curNode, new UndirectedGraphNode(curNode.label));
             }
 
-            clone.neighbors.add(map.get(n.label));
+            UndirectedGraphNode clone = map.get(curNode);
+
+            for(UndirectedGraphNode neighbour: curNode.neighbors) {
+                if (!set.contains(neighbour)) {
+                    queue.add(neighbour);
+                    set.add(neighbour);
+                }
+
+                if (!map.containsKey(neighbour)) {
+                    map.put(neighbour, new UndirectedGraphNode(neighbour.label));
+                }
+
+                UndirectedGraphNode cloneNeighbout = map.get(neighbour);
+                clone.neighbors.add(cloneNeighbout);
+            }
         }
 
+        return map.get(node);
     }
 }

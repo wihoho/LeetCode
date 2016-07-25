@@ -14,21 +14,31 @@ public class BinaryTreePath {
     }
 
     public void binaryTreePaths(TreeNode root, List<String> result, List<Integer> runner) {
-        if (root == null) {
+        if (root == null) return;
+
+        if (root.left == null && root.right == null) {
+            runner.add(root.val);
             result.add(convert(runner));
+            runner.remove(runner.size() - 1);
             return;
         }
 
         runner.add(root.val);
-        binaryTreePaths(root.left, result, runner);
-        binaryTreePaths(root.right, result, runner);
+        if (root.left != null) {
+            binaryTreePaths(root.left, result, runner);
+        }
+
+        if (root.right != null) {
+            binaryTreePaths(root.right, result, runner);
+        }
         runner.remove(runner.size() - 1);
     }
 
     private String convert(List<Integer> input) {
         if (input.isEmpty()) return "";
 
-        StringBuffer sb = new StringBuffer(input.get(0));
+        StringBuffer sb = new StringBuffer();
+        sb.append(input.get(0));
         for (int i = 1; i < input.size(); i++) {
             sb.append("->");
             sb.append(input.get(i));

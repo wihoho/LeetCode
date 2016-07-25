@@ -1,6 +1,4 @@
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  *
@@ -9,35 +7,34 @@ import java.util.List;
 public class Permutations {
     public static void main(String[] args) {
         Permutations permutations = new Permutations();
-        int[] nums = {1, -1, 1, 2, -1, 2, 2, -1};
-        Arrays.sort(nums);
-        List<List<Integer>> result = permutations.permute(nums);
+        ArrayList<Integer> result = new ArrayList<>();
+        result.add(1);
+        result.add(2);
+        result.add(3);
+        ArrayList<ArrayList<Integer>> result1 = permutations.permute(result);
         System.out.println();
     }
 
-    public List<List<Integer>> permute(int[] nums) {
-        List<List<Integer>> result = new ArrayList<List<Integer>>();
-        int[] visisted = new int[nums.length];
-        permutae(result, nums, visisted, new ArrayList<Integer>());
+    public ArrayList<ArrayList<Integer>> permute(ArrayList<Integer> nums) {
+        ArrayList<ArrayList<Integer>> result = new ArrayList<>();
+        permuteHelper(nums, new ArrayList<>(), result);
         return result;
     }
 
-    public void permutae(List<List<Integer>> result, int[] nums, int[] visited, List<Integer> current) {
-        if (current.size() == nums.length) {
-            result.add(new ArrayList<Integer>(current));
+    private void permuteHelper(ArrayList<Integer> nums, ArrayList<Integer> current, ArrayList<ArrayList<Integer>> result) {
+        if (current.size() == nums.size()) {
+            result.add(new ArrayList<>(current));
             return;
         }
 
-        for (int i = 0; i < nums.length; i++) {
-            if (visited[i] == 1 || (i != 0 && nums[i] == nums[i - 1] && visited[i - 1] == 0)) {
+        for (int i = 0; i < nums.size(); i++) {
+            if (current.contains(nums.get(i))) {
                 continue;
             }
 
-            visited[i] = 1;
-            current.add(nums[i]);
-            permutae(result, nums, visited, current);
+            current.add(nums.get(i));
+            permuteHelper(nums, current, result);
             current.remove(current.size() - 1);
-            visited[i] = 0;
         }
     }
 
